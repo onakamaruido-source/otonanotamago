@@ -1,0 +1,342 @@
+/* =========================
+大人のたまご 🐣
+========================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:
+"Yu Gothic",
+"Meiryo",
+sans-serif;
+
+
+background:#fffdf4;
+color:#333;
+line-height:1.6;
+
+
+}
+
+/* =========================
+HEADER
+========================= */
+
+.header{
+
+
+background:#ffd54f;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:15px 25px;
+
+position:sticky;
+top:0;
+
+z-index:999;
+
+box-shadow:
+0 2px 10px rgba(0,0,0,.1);
+
+
+}
+
+.logo{
+
+
+font-size:1.4rem;
+font-weight:bold;
+
+
+}
+
+.nav{
+
+
+display:flex;
+gap:15px;
+
+
+}
+
+.nav a{
+
+
+text-decoration:none;
+
+color:#333;
+
+font-weight:bold;
+
+
+}
+
+/* =========================
+HERO
+========================= */
+
+.hero{
+
+
+text-align:center;
+
+padding:80px 20px;
+
+
+}
+
+.hero h1{
+
+
+font-size:3rem;
+margin-bottom:10px;
+
+
+}
+
+.hero h2{
+
+
+color:#ff9800;
+
+margin-bottom:15px;
+
+
+}
+
+.hero p{
+
+
+max-width:700px;
+
+margin:auto;
+
+
+}
+
+/* =========================
+BUTTON
+========================= */
+
+.btn{
+
+
+display:inline-block;
+
+margin-top:10px;
+
+background:#ffb300;
+
+color:white;
+
+text-decoration:none;
+
+border:none;
+
+border-radius:10px;
+
+padding:12px 20px;
+
+cursor:pointer;
+
+transition:.2s;
+
+
+}
+
+.btn:hover{
+
+
+transform:translateY(-2px);
+
+opacity:.9;
+
+
+}
+
+/* =========================
+CONTAINER
+========================= */
+
+.container{
+
+
+width:min(1100px,95%);
+
+margin:auto;
+
+padding:25px 0;
+
+
+}
+
+/* =========================
+CARD
+========================= */
+
+.card{
+
+
+background:white;
+
+padding:20px;
+
+border-radius:16px;
+
+margin-bottom:20px;
+
+box-shadow:
+0 3px 15px rgba(0,0,0,.08);
+
+
+}
+
+/* =========================
+NEWS
+========================= */
+
+.news-card h2{
+
+
+margin:10px 0;
+
+
+}
+
+.news-image{
+
+
+width:100%;
+
+border-radius:12px;
+
+margin-bottom:10px;
+
+
+}
+
+.category{
+
+
+background:#fff3cd;
+
+color:#856404;
+
+padding:5px 10px;
+
+border-radius:999px;
+
+font-size:.85rem;
+
+
+}
+
+/* =========================
+FORM
+========================= */
+
+input,
+textarea{
+
+
+width:100%;
+
+padding:12px;
+
+margin:10px 0;
+
+border:1px solid #ddd;
+
+border-radius:10px;
+
+
+}
+
+textarea{
+
+
+resize:vertical;
+
+min-height:150px;
+
+
+}
+
+/* =========================
+FOOTER
+========================= */
+
+footer{
+
+
+text-align:center;
+
+padding:30px;
+
+background:#ffd54f;
+
+margin-top:40px;
+
+
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:768px){
+
+
+.header{
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.nav{
+
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.hero h1{
+
+    font-size:2rem;
+}
+
+
+}
+
+.menu-btn{
+    display:none;
+}
+
+.nav{
+    display:flex;
+    gap:15px;
+}
+
+@media (max-width:768px){
+
+    .menu-btn{
+        display:block;
+    }
+
+    .nav{
+        display:none;
+        flex-direction:column;
+    }
+
+    .nav.show{
+        display:flex;
+    }
+
+}

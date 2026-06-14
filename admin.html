@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理画面 | 大人のたまご 🐣</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+
+<div class="logo">
+🐣 大人のたまご
+</div>
+
+<button class="menu-btn" onclick="toggleMenu()">
+☰
+</button>
+
+<nav class="nav" id="nav">
+<a href="index.html">ホーム</a>
+<a href="news.html">ニュース</a>
+<a href="member.html">マイページ</a>
+</nav>
+
+</header>
+
+<main class="container">
+
+<div class="card">
+
+<h1>ニュース投稿</h1>
+
+<input
+type="text"
+id="title"
+placeholder="タイトル">
+
+<input
+type="text"
+id="category"
+placeholder="カテゴリ">
+
+<input
+type="text"
+id="image"
+placeholder="画像URL（任意）">
+
+<textarea
+id="content"
+placeholder="本文"></textarea>
+
+<button
+class="btn"
+onclick="createNews()">
+投稿する
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>投稿済みニュース</h2>
+
+<div id="newsList">
+読み込み中...
+</div>
+
+</div>
+
+</main>
+
+<script src="main.js"></script>
+
+<script>
+
+const user =
+JSON.parse(
+localStorage.getItem("user")
+);
+
+if(
+!user ||
+user.role !== "admin"
+){
+alert("管理者専用ページです");
+location.href = "index.html";
+}
+
+loadAdminNews();
+
+async function createNews(){
+
+const title =
+document.getElementById("title").value.trim();
+
+const category =
+document.getElementById("category").value.trim();
+
+const image =
+document.getElementById("image").value.trim();
+
+const content =
+document.getElementById("content").value.trim();
+
+if(
+!title ||
+!category ||
+!content
+){
+alert("必須項目を入力してください");
+return;
+}
+
+try{
+
+const response =
+await fetch(
+
+GAS_URL +
+
+"?action=createNews" +
+
+"&title=" +
+encodeURIComponent(title) +
+
+"&category=" +
+encodeURIComponent(category) +
+
+"&image=" +
+encodeURIComponent(image) +
+
+"&content=" +
+encodeURIComponent(content)
+
+);
+
+const result =
+await response.json();
+
+if(result.success){
+
+alert("投稿しました");
+
+document.getElementById("title").value="";
+document.getElementById("category").value="";
+document.getElementById("image").value="";
+document.getElementById("content").value="";
+
+loadAdminNews();
+
+}else{
+
+alert("投稿失敗");
+
+}
+
+}catch(error){
+
+console.error(error);
+
+alert("通信エラー");
+
+}
+
+}
+
+async function loadAdminNews(){
+
+const container =
+document.getElementById(
+"newsList"
+);
+
+try{
+
+const response =
+await fetch(
+GAS_URL +
+"?action=newsList"
+);
+
+const result =
+await response.json();
+
+if(!result.success){
+
+container.innerHTML =
+"ニュース取得失敗";
+
+return;
+
+}
+
+if(result.news.length === 0){
+
+container.innerHTML =
+"<p>ニュースはありません。</p>";
+
+return;
+
+}
+
+let html = "";
+
+result.news.forEach(news=>{
+
+html += `
+
+<div class="card">
+
+<h3>${news.title}</h3>
+
+<p>
+カテゴリ:
+${news.category}
+</p>
+
+<button
+class="btn"
+onclick="deleteNews('${news.id}')">
+削除
+</button>
+
+</div>
+
+`;
+
+});
+
+container.innerHTML =
+html;
+
+}catch(error){
+
+console.error(error);
+
+container.innerHTML =
+"取得エラー";
+
+}
+
+}
+
+async function deleteNews(id){
+
+if(
+!confirm("削除しますか？")
+){
+return;
+}
+
+try{
+
+const response =
+await fetch(
+
+GAS_URL +
+
+"?action=deleteNews&id=" +
+
+encodeURIComponent(id)
+
+);
+
+const result =
+await response.json();
+
+if(result.success){
+
+alert("削除しました");
+
+loadAdminNews();
+
+}else{
+
+alert("削除失敗");
+
+}
+
+}catch(error){
+
+console.error(error);
+
+alert("通信エラー");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

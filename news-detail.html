@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ニュース詳細 | 大人のたまご 🐣</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+
+<div class="logo">
+🐣 大人のたまご
+</div>
+
+<button class="menu-btn" onclick="toggleMenu()">
+☰
+</button>
+
+<nav class="nav" id="nav">
+<a href="index.html">ホーム</a>
+<a href="news.html">ニュース一覧</a>
+<a href="member.html">マイページ</a>
+</nav>
+
+</header>
+
+<main class="container">
+
+<div id="newsDetail">
+
+<div class="card">
+読み込み中...
+</div>
+
+</div>
+
+</main>
+
+<footer>
+© 2026 大人のたまご 🐣
+</footer>
+
+<script src="main.js"></script>
+
+<script>
+
+const params =
+new URLSearchParams(
+location.search
+);
+
+const newsId =
+params.get("id");
+
+loadNewsDetail();
+
+async function loadNewsDetail(){
+
+    const container =
+    document.getElementById(
+    "newsDetail"
+    );
+
+    try{
+
+        const response =
+        await fetch(
+            GAS_URL +
+            "?action=newsDetail&id=" +
+            newsId
+        );
+
+        const result =
+        await response.json();
+
+        if(!result.success){
+
+            container.innerHTML =
+            `
+            <div class="card">
+            ニュースが見つかりません。
+            </div>
+            `;
+
+            return;
+
+        }
+
+        const news =
+        result.news;
+
+        container.innerHTML =
+        `
+        <div class="card">
+
+            <span class="category">
+                ${news.category}
+            </span>
+
+            <h1>
+                ${news.title}
+            </h1>
+
+            ${
+                news.image
+                ?
+                `<img
+                src="${news.image}"
+                class="news-image">`
+                :
+                ""
+            }
+
+            <p style="margin-top:15px;">
+                ${news.content.replace(/\n/g,"<br>")}
+            </p>
+
+            <br>
+
+            <a
+            href="news.html"
+            class="btn">
+            ニュース一覧へ戻る
+            </a>
+
+        </div>
+        `;
+
+    }catch(error){
+
+        console.error(error);
+
+        container.innerHTML =
+        `
+        <div class="card">
+        読み込みエラー
+        </div>
+        `;
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

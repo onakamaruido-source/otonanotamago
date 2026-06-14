@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新規登録 | 大人のたまご 🐣</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+
+<div class="logo">
+🐣 大人のたまご
+</div>
+
+<button class="menu-btn" onclick="toggleMenu()">
+☰
+</button>
+
+<nav class="nav" id="nav">
+<a href="index.html">ホーム</a>
+<a href="login.html">ログイン</a>
+</nav>
+
+</header>
+
+<main class="container">
+
+<div class="card">
+
+<h1>新規登録</h1>
+
+<input
+type="text"
+id="name"
+placeholder="ユーザー名">
+
+<input
+type="email"
+id="email"
+placeholder="メールアドレス">
+
+<input
+type="password"
+id="password"
+placeholder="パスワード">
+
+<button
+class="btn"
+onclick="registerUser()">
+登録する </button>
+
+<p>
+既にアカウントをお持ちですか？
+<a href="login.html">
+ログイン
+</a>
+</p>
+
+</div>
+
+</main>
+
+<script src="main.js"></script>
+
+<script>
+
+async function registerUser(){
+
+const name =
+document.getElementById("name").value.trim();
+
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value.trim();
+
+if(
+!name ||
+!email ||
+!password
+){
+alert("すべて入力してください");
+return;
+}
+
+try{
+
+const url =
+GAS_URL +
+"?action=register" +
+"&name=" +
+encodeURIComponent(name) +
+"&email=" +
+encodeURIComponent(email) +
+"&password=" +
+encodeURIComponent(password);
+
+const response =
+await fetch(url);
+
+const result =
+await response.json();
+
+if(result.success){
+
+alert("登録完了");
+
+location.href =
+"login.html";
+
+}else{
+
+alert(result.message);
+
+}
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"通信エラー"
+);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

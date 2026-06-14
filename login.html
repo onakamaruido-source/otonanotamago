@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ログイン | 大人のたまご 🐣</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+
+
+<div class="logo">
+    🐣 大人のたまご
+</div>
+
+<nav class="nav">
+    <a href="index.html">ホーム</a>
+    <a href="register.html">新規登録</a>
+</nav>
+
+
+</header>
+
+<main class="container">
+
+
+<div class="card login-card">
+
+    <h1>ログイン</h1>
+
+    <input
+        type="email"
+        id="email"
+        placeholder="メールアドレス"
+    >
+
+    <input
+        type="password"
+        id="password"
+        placeholder="パスワード"
+    >
+
+    <button
+        class="btn"
+        onclick="login()"
+    >
+        ログイン
+    </button>
+
+    <p>
+        アカウントをお持ちでない方は
+        <a href="register.html">
+            新規登録
+        </a>
+    </p>
+
+</div>
+
+
+</main>
+
+<script src="main.js"></script>
+
+<script>
+
+async function login(){
+
+    const email =
+        document.getElementById("email").value;
+
+    const password =
+        document.getElementById("password").value;
+
+    if(
+        !email ||
+        !password
+    ){
+        alert("入力してください");
+        return;
+    }
+
+    const response =
+        await fetch(
+            GAS_URL +
+            "?action=login" +
+            "&email=" +
+            encodeURIComponent(email) +
+            "&password=" +
+            encodeURIComponent(password)
+        );
+
+    const result =
+        await response.json();
+
+    if(result.success){
+
+        localStorage.setItem(
+            "user",
+            JSON.stringify(result)
+        );
+
+        alert("ログイン成功");
+
+        location.href =
+            "member.html";
+
+    }else{
+
+        alert(
+            result.message
+        );
+
+    }
+
+}
+
+</script>
+
+<script src="main.js"></script>
+
+</body>
+</html>
